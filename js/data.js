@@ -3,6 +3,7 @@ import {getRandomInteger, getRandomDigit, getRandomLengthArray, getRandomArrayEl
 const APARTMENTS = ['palace', 'flat', 'house', 'bungalow'];
 const MIN_ARRAY_PRICES = [0, 1000, 5000, 10000];
 const NUMBER_ROOMES = [1, 2, 3, 100];
+const NUMBER_GUESTS = [1, 2, 3];
 
 let minPrice;
 
@@ -39,6 +40,7 @@ const createAd = () => {
       price: getRandomInteger(minPrice, 1000000),
       type: getRandomArrayElement(APARTMENTS),
       roomes: getRandomArrayElement(NUMBER_ROOMES),
+      guests: getRandomArrayElement(NUMBER_GUESTS),
       checkin: timeRemoval,
       checkout: timeRemoval,
       features: getRandomLengthArray(apartmentFeatures),
@@ -52,4 +54,7 @@ const createAd = () => {
   }
 }
 
-export {createAd};
+const createAdList = new Array(10).fill(null).map(() => createAd());
+
+export {createAdList};
+export {APARTMENTS};
