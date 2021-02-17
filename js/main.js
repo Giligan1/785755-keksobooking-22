@@ -1,2 +1,2 @@
 import './data.js';
-import './ad.js';
+import './create-card.js';

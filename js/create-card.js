@@ -1,25 +1,23 @@
-import './data.js';
-import { createAdList } from './data.js';
-import { APARTMENTS } from './data.js';
+import { createAdList, APARTMENTS } from './data.js';
 import { getDeleteChild } from './utils.js'
 
 const card = document.querySelector('#card').content;
 const fragment = document.createDocumentFragment();
 let map = document.querySelector('.map__canvas');
 
-const getFeatureElements = (currentArray, Featurefragment) => {
-  currentArray.forEach(element => {
+const getFeatureElements = (currentArray, featureFragment) => {
+  currentArray.forEach(featureTitle => {
     let newFeature = document.createElement('li');
     newFeature.classList.add('popup__feature');
-    newFeature.classList.add('popup__feature--' + element);
-    Featurefragment.appendChild(newFeature);
+    newFeature.classList.add('popup__feature--' + featureTitle);
+    featureFragment.appendChild(newFeature);
   });
 };
 
-const getImageElements = (imageArray, image, imageFragment) => {
-  imageArray.forEach(element => {
-    let imageClone = image.cloneNode();
-    imageClone.src = element;
+const getImageElements = (imageArray, photo, imageFragment) => {
+  imageArray.forEach(image => {
+    let imageClone = photo.cloneNode();
+    imageClone.src = image;
     imageFragment.appendChild(imageClone);
   });
 };
@@ -39,9 +37,9 @@ for (let i = 0; i < createAdList.length; i++) {
   let authorAvatar = cardClone.querySelector('.popup__avatar');
   offerTitle.textContent = createAdList[i].offer.title;
   offerAdress.textContent = createAdList[i].offer.address;
-  offerPrice.textContent = createAdList[i].offer.price + ' ₽/ночь';
-  offerCapacity.textContent = createAdList[i].offer.roomes + ' комнаты для ' + createAdList[i].offer.guests + ' гостей';
-  offerTextTime.textContent = 'Заезд после ' + createAdList[i].offer.checkin + ' выезд до ' + createAdList[i].offer.checkout;
+  offerPrice.textContent = ` ${createAdList[i].offer.price} ₽/ночь`;
+  offerCapacity.textContent = `${createAdList[i].offer.roomes} комнаты для ${createAdList[i].offer.guests} гостей`;
+  offerTextTime.textContent = `Заезд после ${createAdList[i].offer.checkin} выезд до ${createAdList[i].offer.checkout}`;
   getDeleteChild(offerFeatures);
   getDeleteChild(offerPhotos);
   getFeatureElements(createAdList[i].offer.features, offerFeatures);
@@ -49,6 +47,8 @@ for (let i = 0; i < createAdList.length; i++) {
   offerDescription.textContent = createAdList[i].offer.description;
   authorAvatar.src = createAdList[i].author.avatar;
 
+  // APARTMENTS[] - элемент массива с названиями апартаментов, находится в модуле ./data.js
+  // offerType - переменная, в которую записан html-элемент с классом .popup__type
   switch (createAdList[i].offer.type) {
     case APARTMENTS[0]:
       offerType.textContent = 'Квартира';
