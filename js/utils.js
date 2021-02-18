@@ -23,4 +23,10 @@ const getRandomLengthArray = (arrayTitle) => {
   return arrayTitle.slice();
 }
 
-export {getRandomInteger, getRandomDigit, getRandomArrayElement, getRandomLengthArray};
+const getDeleteChild = (parentElement) => {
+  while (parentElement.firstChild) {
+    parentElement.removeChild(parentElement.lastChild);
+  }
+};
+
+export {getRandomInteger, getRandomDigit, getRandomArrayElement, getRandomLengthArray, getDeleteChild};

@@ -1,4 +1,2 @@
-import {createAd} from './data.js'
-
-const createAdList = new Array(10).fill(null).map(() => createAd());
-createAdList;
+import './data.js';
+import './create-card.js';
