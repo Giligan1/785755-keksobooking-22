@@ -56,5 +56,4 @@ const createAd = () => {
 
 const createAdList = new Array(10).fill(null).map(() => createAd());
 
-export {createAdList};
-export {APARTMENTS};
+export {createAdList, APARTMENTS, MIN_ARRAY_PRICES};
