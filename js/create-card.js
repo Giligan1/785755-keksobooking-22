@@ -3,7 +3,6 @@ import { getDeleteChild } from './utils.js'
 
 const card = document.querySelector('#card').content;
 const fragment = document.createDocumentFragment();
-let map = document.querySelector('.map__canvas');
 
 const getFeatureElements = (currentArray, featureFragment) => {
   currentArray.forEach(featureTitle => {
@@ -67,4 +66,4 @@ for (let i = 0; i < createAdList.length; i++) {
   fragment.appendChild(cardClone);
 }
 
-map.appendChild(fragment.firstElementChild);
+export {fragment};
