@@ -63,7 +63,6 @@ if (numberOfRooms.selectedIndex === 0) {
   capacity.options[0].setAttribute('disabled' ,'disabled');
   capacity.options[1].setAttribute('disabled' ,'disabled');
   capacity.options[3].setAttribute('disabled' ,'disabled');
-  capacity.setCustomValidity('Для 1 гостя');
 }
 
 numberOfRooms.addEventListener('change', () => {
@@ -73,28 +72,24 @@ numberOfRooms.addEventListener('change', () => {
     capacity.options[0].setAttribute('disabled' ,'disabled');
     capacity.options[1].setAttribute('disabled' ,'disabled');
     capacity.options[3].setAttribute('disabled' ,'disabled');
-    capacity.setCustomValidity('Для 1 гостя');
   } else if (numberOfRooms.selectedIndex === 1) {
     capacity.selectedIndex = 2;
     capacity.options[1].removeAttribute('disabled' ,'disabled');
     capacity.options[2].removeAttribute('disabled' ,'disabled');
     capacity.options[0].setAttribute('disabled' ,'disabled');
     capacity.options[3].setAttribute('disabled' ,'disabled');
-    capacity.setCustomValidity('Для 2 гостей или для 1 гостя');
   } else if (numberOfRooms.selectedIndex === 2) {
     capacity.selectedIndex = 2;
     capacity.options[0].removeAttribute('disabled' ,'disabled');
     capacity.options[1].removeAttribute('disabled' ,'disabled');
     capacity.options[2].removeAttribute('disabled' ,'disabled');
     capacity.options[3].setAttribute('disabled' ,'disabled');
-    capacity.setCustomValidity('Для 3 гостей, для 2 гостей или для 1 гостя');
   } else if (numberOfRooms.selectedIndex === 3) {
     capacity.options[3].removeAttribute('disabled' ,'disabled');
     capacity.options[0].setAttribute('disabled' ,'disabled');
     capacity.options[1].setAttribute('disabled' ,'disabled');
     capacity.options[2].setAttribute('disabled' ,'disabled');
     capacity.selectedIndex = 3;
-    capacity.setCustomValidity('Не для гостей');
   }
   capacity.reportValidity();
 });
