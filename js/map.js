@@ -1,6 +1,5 @@
 /* global L:readonly */
 
-import {createAdList} from './data.js';
 import {fragment} from './create-card.js';
 
 let formFilters = document.querySelector('.map__filters');
@@ -42,7 +41,7 @@ const mainIconMarker = L.icon({
   iconAnchor: [25, 50],
 })
 
-const mainMarker = L.marker(
+let mainMarker = L.marker(
   {
     lat: 35.68950,
     lng: 139.69171,
@@ -61,17 +60,19 @@ const iconMarker = L.icon({
   iconAnchor: [25, 50],
 })
 
-for (let i = 0; i < createAdList.length; i++) {
-  const marker = L.marker(
-    {
-      lat: createAdList[i].location.x,
-      lng: createAdList[i].location.y,
-    },
-    {
-      icon: iconMarker,
-    },
-  );
-  marker.addTo(map).bindPopup(fragment.children[i]);
+const createMarkers = (arrayData) => {
+  for (let i = 0; i < arrayData.length; i++) {
+    const marker = L.marker(
+      {
+        lat: arrayData[i].location.lat,
+        lng: arrayData[i].location.lng,
+      },
+      {
+        icon: iconMarker,
+      },
+    );
+    marker.addTo(map).bindPopup(fragment.children[i]);
+  }
 }
 
 adress.readOnly = true;
@@ -81,3 +82,5 @@ mainMarker.on('moveend', (evt) => {
   let currentCoordinates = (evt.target.getLatLng());
   adress.value = `${currentCoordinates.lat.toFixed(5)} , ${currentCoordinates.lng.toFixed(5)}`;
 })
+
+export {createMarkers, mainMarker, formFilters, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress};

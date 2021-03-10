@@ -1,8 +1,21 @@
 import {MIN_ARRAY_PRICES} from './data.js';
+import {mainMarker, formFilters, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress} from './map.js';
+import {isEscclick, isMouseclick} from './utils.js';
+import {sendData} from './server.js';
+
+/* global L:readonly */
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LEGNTH = 100;
+const centerTokyoCoordinates = {
+  LATITUDE: 35.68950,
+  LONGTITUDE: 139.69171,
+}
 
+const main = document.querySelector('main');
+const errorMessage = document.querySelector('#error').content.querySelector('.error');
+const successMessage = document.querySelector('#success').content.querySelector('.success');
+const errorButton = errorMessage.querySelector('.error__button');
 let timeIn = document.querySelector('#timein');
 let timeOut = document.querySelector('#timeout');
 let typeApartment = document.querySelector('#type');
@@ -93,3 +106,57 @@ numberOfRooms.addEventListener('change', () => {
   }
   capacity.reportValidity();
 });
+
+const formReset = () => {
+  formAd.reset(),
+  formFilters.reset(),
+  mainMarker.setLatLng(L.latLng(centerTokyoCoordinates.LATITUDE, centerTokyoCoordinates.LONGTITUDE)),
+  adress.value = `${centerTokyoCoordinates.LATITUDE} , ${centerTokyoCoordinates.LONGTITUDE}`;
+};
+
+const getSuccessMessage = () => {
+  successMessage.style.zIndex = 100;
+  main.append(successMessage);
+  formReset();
+  document.addEventListener('keydown', closeSuccessMessage);
+  document.addEventListener('click', closeSuccessMessage);
+}
+
+const closeSuccessMessage = (evt) => {
+  if (isEscclick(evt) || isMouseclick(evt)) {
+    evt.preventDefault();
+    successMessage.remove();
+    document.removeEventListener('keydown', closeSuccessMessage);
+    document.removeEventListener('click', closeSuccessMessage);
+  }
+}
+
+const getErrorMessage = () => {
+  errorMessage.style.zIndex = 100;
+  main.append(errorMessage);
+  formReset();
+  document.addEventListener('keydown', closeErrorMessage);
+  document.addEventListener('click', closeErrorMessage);
+  errorButton.addEventListener('click', closeErrorMessage);
+}
+
+const closeErrorMessage = (evt) => {
+  if (isEscclick(evt) || isMouseclick(evt)) {
+    evt.preventDefault();
+    errorMessage.remove();
+    document.removeEventListener('keydown', closeErrorMessage);
+    document.removeEventListener('click', closeErrorMessage);
+    errorButton.removeEventListener('click', closeSuccessMessage);
+  }
+}
+
+const setFormSubmit = () => {
+  formAd.addEventListener('submit', (evt) => {
+    evt.preventDefault;
+    sendData(getSuccessMessage, getErrorMessage, new FormData(evt.target));
+  })
+}
+
+setFormSubmit();
+
+export {formFilters, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress};
