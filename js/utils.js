@@ -17,6 +17,7 @@ const getRandomDigit = (minDigit, maxDigit, decimalPlaces) => {
 const getRandomArrayElement = (elements) => {
   return elements[getRandomInteger(0, elements.length - 1)];
 }
+getRandomArrayElement;
 
 const getRandomLengthArray = (arrayTitle) => {
   arrayTitle.length = (getRandomInteger(1, arrayTitle.length));
@@ -60,4 +61,4 @@ const isMouseclick = (evt) => {
   return evt.type === 'click';
 };
 
-export {getRandomInteger, getRandomDigit, getRandomArrayElement, getRandomLengthArray, getDeleteChild, showAlert, isEscclick, isMouseclick};
+export {getRandomInteger, getRandomDigit, getRandomLengthArray, getDeleteChild, showAlert, isEscclick, isMouseclick};
