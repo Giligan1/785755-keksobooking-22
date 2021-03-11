@@ -37,7 +37,7 @@ const createCard = (arrayData) => {
     offerTitle.textContent = arrayData[i].offer.title;
     offerAdress.textContent = arrayData[i].offer.address;
     offerPrice.textContent = ` ${arrayData[i].offer.price} ₽/ночь`;
-    offerCapacity.textContent = `${arrayData[i].offer.roomes} комнаты для ${arrayData[i].offer.guests} гостей`;
+    offerCapacity.textContent = `${arrayData[i].offer.rooms} комнаты для ${arrayData[i].offer.guests} гостей`;
     offerTextTime.textContent = `Заезд после ${arrayData[i].offer.checkin} выезд до ${arrayData[i].offer.checkout}`;
     getDeleteChild(offerFeatures);
     getDeleteChild(offerPhotos);

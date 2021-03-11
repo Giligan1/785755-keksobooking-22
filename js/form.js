@@ -152,7 +152,7 @@ const closeErrorMessage = (evt) => {
 
 const setFormSubmit = () => {
   formAd.addEventListener('submit', (evt) => {
-    evt.preventDefault;
+    evt.preventDefault();
     sendData(getSuccessMessage, getErrorMessage, new FormData(evt.target));
   })
 }
