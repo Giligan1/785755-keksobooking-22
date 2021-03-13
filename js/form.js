@@ -1,5 +1,6 @@
 import {MIN_ARRAY_PRICES} from './data.js';
-import {mainMarker, formFilters, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress} from './map.js';
+import {mainMarker, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress} from './map.js';
+import {formFilters} from './filter.js';
 import {isEscclick, isMouseclick} from './utils.js';
 import {sendData} from './server.js';
 

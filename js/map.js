@@ -1,14 +1,15 @@
 /* global L:readonly */
 
 import {fragment} from './create-card.js';
+import {getFilters, formFilters, formMapFeatures} from './filter.js';
 
-let formFilters = document.querySelector('.map__filters');
-let formMapFilters = formFilters.querySelectorAll('.map__filter');
-let formMapFeatures = formFilters.querySelector('.map__features');
-let formAd = document.querySelector('.ad-form');
-let formAdHeader = formAd.querySelector('.ad-form-header');
-let formAdElement = formAd.querySelectorAll('.ad-form__element');
-let adress = formAd.querySelector('#address');
+
+const formMapFilters = formFilters.querySelectorAll('.map__filter');
+const formAd = document.querySelector('.ad-form');
+const formAdHeader = formAd.querySelector('.ad-form-header');
+const formAdElement = formAd.querySelectorAll('.ad-form__element');
+const adress = formAd.querySelector('#address');
+const NUMBER_OF_APARTMENTS = 10;
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -61,6 +62,8 @@ const iconMarker = L.icon({
 })
 
 const createMarkers = (arrayData) => {
+  arrayData.slice(0, NUMBER_OF_APARTMENTS);
+  arrayData.filter(getFilters);
   for (let i = 0; i < arrayData.length; i++) {
     const marker = L.marker(
       {
@@ -83,4 +86,4 @@ mainMarker.on('moveend', (evt) => {
   adress.value = `${currentCoordinates.lat.toFixed(5)} , ${currentCoordinates.lng.toFixed(5)}`;
 })
 
-export {createMarkers, mainMarker, formFilters, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress};
+export {createMarkers, mainMarker, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress};
