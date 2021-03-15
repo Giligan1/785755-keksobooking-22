@@ -13,7 +13,6 @@ const getData = (onSuccess) => {
     })
     .then((data) => {
       onSuccess(data);
-      console.log(data);
     })
     .catch(() => {
       showAlert(ERROR_MESSAGE);

@@ -1,8 +1,7 @@
 /* global L:readonly */
 
 import {fragment} from './create-card.js';
-import {getFilters, formFilters, formMapFeatures} from './filter.js';
-
+import {formFilters, formMapFeatures, arrayAdvertisement} from './filter.js';
 
 const formMapFilters = formFilters.querySelectorAll('.map__filter');
 const formAd = document.querySelector('.ad-form');
@@ -38,8 +37,8 @@ L.tileLayer(
 
 const mainIconMarker = L.icon({
   iconUrl: 'img/main-pin.svg',
-  iconSize: [50, 50],
-  iconAnchor: [25, 50],
+  iconSize: [45, 45],
+  iconAnchor: [22.5, 50],
 })
 
 let mainMarker = L.marker(
@@ -55,16 +54,18 @@ let mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-const iconMarker = L.icon({
-  iconUrl: 'img/pin.svg',
-  iconSize: [50, 50],
-  iconAnchor: [25, 50],
-})
+const adLayer = L.layerGroup().addTo(map);
 
 const createMarkers = (arrayData) => {
-  arrayData.slice(0, NUMBER_OF_APARTMENTS);
-  arrayData.filter(getFilters);
+  adLayer.clearLayers();
+  arrayAdvertisement(arrayData).slice(0, NUMBER_OF_APARTMENTS);
   for (let i = 0; i < arrayData.length; i++) {
+    const iconMarker = L.icon({
+      iconUrl: 'img/pin.svg',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    })
+
     const marker = L.marker(
       {
         lat: arrayData[i].location.lat,
@@ -74,7 +75,7 @@ const createMarkers = (arrayData) => {
         icon: iconMarker,
       },
     );
-    marker.addTo(map).bindPopup(fragment.children[i]);
+    marker.addTo(adLayer).bindPopup(fragment.children[i]);
   }
 }
 

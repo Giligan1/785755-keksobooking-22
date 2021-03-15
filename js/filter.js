@@ -1,15 +1,39 @@
 const formFilters = document.querySelector('.map__filters');
 const formMapFeatures = formFilters.querySelector('.map__features');
 const housingType = formFilters.querySelector('#housing-type');
-// const housingPrice = formFilters.document.querySelector('#housing-price');
+const housingPrice = formFilters.querySelector('#housing-price');
 const housingRooms = formFilters.querySelector('#housing-rooms');
 const housingGuests = formFilters.querySelector('#housing-guests');
 
+const FILTER_PRICES = {
+  'min': 10000,
+  'max': 50000,
+  'any': 0,
+}
+
+const getFilterPrice = (data) => {
+  switch (housingPrice.value) {
+    case 'low':
+      return data.offer.price < FILTER_PRICES[housingPrice.value];
+    case 'middle':
+      return (data.offer.price >= FILTER_PRICES['low']) && (data.offer.price <= FILTER_PRICES['high']);
+    case 'high':
+      return data.offer.price > FILTER_PRICES[housingPrice.value];
+    default:
+      return FILTER_PRICES;
+  }
+};
+
 const getFilters = (data) => {
   const type = housingType.value === 'any' || housingType.value === data.offer.type;
+  const price = getFilterPrice(data);
   const rooms = housingRooms.value === 'any' || housingRooms.value === data.offer.rooms;
   const guests = housingGuests.value === 'any' || housingGuests.value === data.offer.guests;
-  return type && rooms && guests;
+  return type && price && rooms && guests;
+}
+
+const arrayAdvertisement = (data) => {
+  return data.slice().filter(getFilters);
 }
 
 const setFilterChange = (cb) => {
@@ -18,6 +42,6 @@ const setFilterChange = (cb) => {
   })
 }
 
-export {setFilterChange, getFilters, formFilters, formMapFeatures}
+export {setFilterChange, getFilters, formFilters, formMapFeatures, arrayAdvertisement}
 
 
