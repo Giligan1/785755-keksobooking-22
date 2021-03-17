@@ -50,16 +50,16 @@ const createCard = (arrayData) => {
     // offerType - переменная, в которую записан html-элемент с классом .popup__type
     switch (arrayData[i].offer.type) {
       case APARTMENTS[0]:
-        offerType.textContent = 'Квартира';
+        offerType.textContent = 'Дворец';
         break;
       case APARTMENTS[1]:
-        offerType.textContent = 'Бунгало';
+        offerType.textContent = 'Квартира';
         break;
       case APARTMENTS[2]:
         offerType.textContent = 'Дом';
         break;
       case APARTMENTS[3]:
-        offerType.textContent = 'Дворец';
+        offerType.textContent = 'Бунгало';
         break;
     }
     fragment.appendChild(cardClone);

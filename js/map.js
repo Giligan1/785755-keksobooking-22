@@ -1,6 +1,6 @@
 /* global L:readonly */
 
-import {fragment} from './create-card.js';
+import {fragment, createCard} from './create-card.js';
 import {formFilters, formMapFeatures, arrayAdvertisement} from './filter.js';
 
 const formMapFilters = formFilters.querySelectorAll('.map__filter');
@@ -58,8 +58,12 @@ const adLayer = L.layerGroup().addTo(map);
 
 const createMarkers = (arrayData) => {
   adLayer.clearLayers();
-  arrayAdvertisement(arrayData).slice(0, NUMBER_OF_APARTMENTS);
-  for (let i = 0; i < arrayData.length; i++) {
+  const filteredArray = arrayAdvertisement(arrayData).slice(0, NUMBER_OF_APARTMENTS);
+
+  for (let i = 0; i < filteredArray.length; i++) {
+
+    createCard(filteredArray);
+
     const iconMarker = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],
@@ -68,8 +72,8 @@ const createMarkers = (arrayData) => {
 
     const marker = L.marker(
       {
-        lat: arrayData[i].location.lat,
-        lng: arrayData[i].location.lng,
+        lat: filteredArray[i].location.lat,
+        lng: filteredArray[i].location.lng,
       },
       {
         icon: iconMarker,
@@ -79,6 +83,11 @@ const createMarkers = (arrayData) => {
   }
 }
 
+// const removeMarkers = (markers) => {
+//   markers.forEach((marker) => map.remove(marker));
+//   markers = [];
+// };
+
 adress.readOnly = true;
 adress.value = `${mainMarker._latlng.lat} , ${mainMarker._latlng.lng}`;
 
@@ -87,4 +96,4 @@ mainMarker.on('moveend', (evt) => {
   adress.value = `${currentCoordinates.lat.toFixed(5)} , ${currentCoordinates.lng.toFixed(5)}`;
 })
 
-export {createMarkers, mainMarker, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress};
+export {createMarkers, mainMarker, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress, adLayer};

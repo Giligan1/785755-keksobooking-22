@@ -1,3 +1,5 @@
+// import {adLayer} from './map.js';
+
 const formFilters = document.querySelector('.map__filters');
 const formMapFeatures = formFilters.querySelector('.map__features');
 const housingType = formFilters.querySelector('#housing-type');
@@ -6,19 +8,18 @@ const housingRooms = formFilters.querySelector('#housing-rooms');
 const housingGuests = formFilters.querySelector('#housing-guests');
 
 const FILTER_PRICES = {
-  'min': 10000,
-  'max': 50000,
-  'any': 0,
+  'low': 10000,
+  'high': 50000,
 }
 
 const getFilterPrice = (data) => {
   switch (housingPrice.value) {
     case 'low':
-      return data.offer.price < FILTER_PRICES[housingPrice.value];
+      return data.offer.price < FILTER_PRICES['low'];
     case 'middle':
       return (data.offer.price >= FILTER_PRICES['low']) && (data.offer.price <= FILTER_PRICES['high']);
     case 'high':
-      return data.offer.price > FILTER_PRICES[housingPrice.value];
+      return data.offer.price > FILTER_PRICES['high'];
     default:
       return FILTER_PRICES;
   }
