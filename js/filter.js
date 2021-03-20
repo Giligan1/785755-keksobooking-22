@@ -1,11 +1,10 @@
-// import {adLayer} from './map.js';
-
 const formFilters = document.querySelector('.map__filters');
 const formMapFeatures = formFilters.querySelector('.map__features');
 const housingType = formFilters.querySelector('#housing-type');
 const housingPrice = formFilters.querySelector('#housing-price');
 const housingRooms = formFilters.querySelector('#housing-rooms');
 const housingGuests = formFilters.querySelector('#housing-guests');
+const housingFeatures = formFilters.querySelector('#housing-features');
 
 const FILTER_PRICES = {
   'low': 10000,
@@ -25,12 +24,21 @@ const getFilterPrice = (data) => {
   }
 };
 
+const getFeaturesFilter = (data) => {
+  const isFeaturesChecked = housingFeatures.querySelectorAll('input:checked');
+
+  return Array.from(isFeaturesChecked).every((input) => {
+    return data.offer.features.includes(input.value);
+  });
+};
+
 const getFilters = (data) => {
   const type = housingType.value === 'any' || housingType.value === data.offer.type;
   const price = getFilterPrice(data);
-  const rooms = housingRooms.value === 'any' || housingRooms.value === data.offer.rooms;
-  const guests = housingGuests.value === 'any' || housingGuests.value === data.offer.guests;
-  return type && price && rooms && guests;
+  const rooms = housingRooms.value === 'any' || Math.floor(housingRooms.value) === data.offer.rooms;
+  const guests = housingGuests.value === 'any' || Math.floor(housingGuests.value) === data.offer.guests;
+  const features = getFeaturesFilter(data);
+  return type && price && rooms && guests && features;
 }
 
 const arrayAdvertisement = (data) => {
