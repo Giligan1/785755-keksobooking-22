@@ -1,10 +1,11 @@
-import {MIN_ARRAY_PRICES} from './data.js';
-import {mainMarker, formFilters, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress} from './map.js';
+import {mainMarker, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress} from './map.js';
+import {formFilters} from './filter.js';
 import {isEscclick, isMouseclick} from './utils.js';
 import {sendData} from './server.js';
 
 /* global L:readonly */
 
+const MIN_ARRAY_PRICES = [0, 1000, 5000, 10000];
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LEGNTH = 100;
 const centerTokyoCoordinates = {

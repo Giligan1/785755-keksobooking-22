@@ -1,14 +1,14 @@
 /* global L:readonly */
 
-import {fragment} from './create-card.js';
+import {formFilters, formMapFeatures, arrayAdvertisement} from './filter.js';
 
-let formFilters = document.querySelector('.map__filters');
-let formMapFilters = formFilters.querySelectorAll('.map__filter');
-let formMapFeatures = formFilters.querySelector('.map__features');
-let formAd = document.querySelector('.ad-form');
-let formAdHeader = formAd.querySelector('.ad-form-header');
-let formAdElement = formAd.querySelectorAll('.ad-form__element');
-let adress = formAd.querySelector('#address');
+const formMapFilters = formFilters.querySelectorAll('.map__filter');
+const formAd = document.querySelector('.ad-form');
+const formAdHeader = formAd.querySelector('.ad-form-header');
+const formAdElement = formAd.querySelectorAll('.ad-form__element');
+const adress = formAd.querySelector('#address');
+const NUMBER_OF_APARTMENTS = 10;
+const APARTMENTS = ['palace', 'flat', 'house', 'bungalow'];
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -37,8 +37,8 @@ L.tileLayer(
 
 const mainIconMarker = L.icon({
   iconUrl: 'img/main-pin.svg',
-  iconSize: [50, 50],
-  iconAnchor: [25, 50],
+  iconSize: [45, 45],
+  iconAnchor: [22.5, 50],
 })
 
 let mainMarker = L.marker(
@@ -54,24 +54,93 @@ let mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-const iconMarker = L.icon({
-  iconUrl: 'img/pin.svg',
-  iconSize: [50, 50],
-  iconAnchor: [25, 50],
-})
+const adLayer = L.layerGroup().addTo(map);
+
+const getFeatureElements = (currentArray, featureFragment) => {
+  currentArray.forEach(featureTitle => {
+    let newFeature = document.createElement('li');
+    newFeature.classList.add('popup__feature');
+    newFeature.classList.add('popup__feature--' + featureTitle);
+    featureFragment.appendChild(newFeature);
+  });
+};
+
+const getImageElements = (imageArray, photo, imageFragment) => {
+  imageArray.forEach(image => {
+    let imageClone = photo.cloneNode();
+    imageClone.src = image;
+    imageFragment.appendChild(imageClone);
+  });
+};
 
 const createMarkers = (arrayData) => {
-  for (let i = 0; i < arrayData.length; i++) {
+  adLayer.clearLayers();
+  const filteredArray = arrayAdvertisement(arrayData).slice(0, NUMBER_OF_APARTMENTS);
+
+  for (let i = 0; i < filteredArray.length; i++) {
+
+    const iconMarker = L.icon({
+      iconUrl: 'img/pin.svg',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    })
+
     const marker = L.marker(
       {
-        lat: arrayData[i].location.lat,
-        lng: arrayData[i].location.lng,
+        lat: filteredArray[i].location.lat,
+        lng: filteredArray[i].location.lng,
       },
       {
         icon: iconMarker,
       },
     );
-    marker.addTo(map).bindPopup(fragment.children[i]);
+
+    let typeApartments;
+
+    switch (filteredArray[i].offer.type) {
+      case APARTMENTS[0]:
+        typeApartments = 'Дворец';
+        break;
+      case APARTMENTS[1]:
+        typeApartments = 'Квартира';
+        break;
+      case APARTMENTS[2]:
+        typeApartments = 'Дом';
+        break;
+      case APARTMENTS[3]:
+        typeApartments = 'Бунгало';
+        break;
+    }
+
+    const card = document.querySelector('#card').content;
+    const cardClone = card.cloneNode(true);
+
+    const avatar = cardClone.querySelector('.popup__avatar');
+    avatar.src = filteredArray[i].author.avatar;
+
+    const popupFeatures = document.createElement('ul');
+    popupFeatures.classList.add('popup__features');
+    getFeatureElements(filteredArray[i].offer.features, popupFeatures)
+
+    const popupPhotos = document.createElement('div');
+    popupPhotos.classList.add('popup__photos');
+
+    const popupPhoto = cardClone.querySelector('.popup__photo');
+    getImageElements(filteredArray[i].offer.photos, popupPhoto, popupPhotos)
+
+    marker.addTo(adLayer).bindPopup(`
+      <article class="popup">
+        <img src="${filteredArray[i].author.avatar}" class="popup__avatar" width="70" height="70" alt="Аватар пользователя">
+        <h3 class ="popup__title">${filteredArray[i].offer.title}</h3>
+        <p class ="popup__text--adress">${filteredArray[i].offer.address}</p>
+        <p class ="popup__text--price">${filteredArray[i].offer.price}</p>
+        <h4 class ="popup__type">${typeApartments}</h4>
+        <p class ="popup__text--capacity">${filteredArray[i].offer.rooms} комнаты для ${filteredArray[i].offer.guests} гостей</p>
+        <p class ="popup__text-time">Заезд после ${filteredArray[i].offer.checkin} выезд до ${filteredArray[i].offer.checkout}</p>
+        ${popupFeatures.outerHTML}
+        <p class ="popup__description">${filteredArray[i].offer.description}</p>
+        ${popupPhotos.outerHTML}
+      </article>`)
   }
 }
 
@@ -83,4 +152,4 @@ mainMarker.on('moveend', (evt) => {
   adress.value = `${currentCoordinates.lat.toFixed(5)} , ${currentCoordinates.lng.toFixed(5)}`;
 })
 
-export {createMarkers, mainMarker, formFilters, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress};
+export {createMarkers, mainMarker, formMapFilters, formMapFeatures, formAd, formAdHeader, formAdElement, adress, adLayer};
