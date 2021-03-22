@@ -77,7 +77,7 @@ const createMarkers = (arrayData) => {
   adLayer.clearLayers();
   const filteredArray = arrayAdvertisement(arrayData).slice(0, NUMBER_OF_APARTMENTS);
 
-  for (let i = 0; i < filteredArray.length; i++) {
+  for (let i = 0; i < 10; i++) {
 
     const iconMarker = L.icon({
       iconUrl: 'img/pin.svg',
@@ -114,9 +114,6 @@ const createMarkers = (arrayData) => {
 
     const card = document.querySelector('#card').content;
     const cardClone = card.cloneNode(true);
-
-    const avatar = cardClone.querySelector('.popup__avatar');
-    avatar.src = filteredArray[i].author.avatar;
 
     const popupFeatures = document.createElement('ul');
     popupFeatures.classList.add('popup__features');
