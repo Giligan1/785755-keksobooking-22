@@ -5,11 +5,7 @@ const ERROR_MESSAGE = 'При загрузке данных с сервера п
 const getData = (onSuccess) => {
   fetch('https://22.javascript.pages.academy/keksobooking/data')
     .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        showAlert(ERROR_MESSAGE);
-      }
+      return (response.ok) ? response.json() : showAlert(ERROR_MESSAGE);
     })
     .then((data) => {
       onSuccess(data);
@@ -28,11 +24,7 @@ const sendData = (onSuccess, onFail, body) => {
     },
   )
     .then((response) => {
-      if (response.ok) {
-        onSuccess();
-      } else {
-        onFail();
-      }
+      return (response.ok) ? onSuccess() : onFail();
     })
     .catch(() => {
       onFail();
