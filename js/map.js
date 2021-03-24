@@ -1,6 +1,6 @@
 /* global L:readonly */
 
-import {formFilters, formMapFeatures, arrayAdvertisement} from './filter.js';
+import {formFilters, formMapFeatures, setArrayAdvertisement} from './filter.js';
 
 const formMapFilters = formFilters.querySelectorAll('.map__filter');
 const formAd = document.querySelector('.ad-form');
@@ -75,57 +75,57 @@ const getImageElements = (imageArray, photo, imageFragment) => {
 
 const createMarkers = (arrayData) => {
   adLayer.clearLayers();
-  const filteredArray = arrayAdvertisement(arrayData).slice(0, NUMBER_OF_APARTMENTS);
+  const filteredArray = setArrayAdvertisement(arrayData).slice(0, NUMBER_OF_APARTMENTS);
 
   for (let i = 0; i < 10; i++) {
+    if (filteredArray[i]) {
+      const iconMarker = L.icon({
+        iconUrl: 'img/pin.svg',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+      })
 
-    const iconMarker = L.icon({
-      iconUrl: 'img/pin.svg',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-    })
+      const marker = L.marker(
+        {
+          lat: filteredArray[i].location.lat,
+          lng: filteredArray[i].location.lng,
+        },
+        {
+          icon: iconMarker,
+        },
+      );
 
-    const marker = L.marker(
-      {
-        lat: filteredArray[i].location.lat,
-        lng: filteredArray[i].location.lng,
-      },
-      {
-        icon: iconMarker,
-      },
-    );
+      let typeApartments;
 
-    let typeApartments;
+      switch (filteredArray[i].offer.type) {
+        case APARTMENTS[0]:
+          typeApartments = 'Дворец';
+          break;
+        case APARTMENTS[1]:
+          typeApartments = 'Квартира';
+          break;
+        case APARTMENTS[2]:
+          typeApartments = 'Дом';
+          break;
+        case APARTMENTS[3]:
+          typeApartments = 'Бунгало';
+          break;
+      }
 
-    switch (filteredArray[i].offer.type) {
-      case APARTMENTS[0]:
-        typeApartments = 'Дворец';
-        break;
-      case APARTMENTS[1]:
-        typeApartments = 'Квартира';
-        break;
-      case APARTMENTS[2]:
-        typeApartments = 'Дом';
-        break;
-      case APARTMENTS[3]:
-        typeApartments = 'Бунгало';
-        break;
-    }
+      const card = document.querySelector('#card').content;
+      const cardClone = card.cloneNode(true);
 
-    const card = document.querySelector('#card').content;
-    const cardClone = card.cloneNode(true);
+      const popupFeatures = document.createElement('ul');
+      popupFeatures.classList.add('popup__features');
+      getFeatureElements(filteredArray[i].offer.features, popupFeatures)
 
-    const popupFeatures = document.createElement('ul');
-    popupFeatures.classList.add('popup__features');
-    getFeatureElements(filteredArray[i].offer.features, popupFeatures)
+      const popupPhotos = document.createElement('div');
+      popupPhotos.classList.add('popup__photos');
 
-    const popupPhotos = document.createElement('div');
-    popupPhotos.classList.add('popup__photos');
+      const popupPhoto = cardClone.querySelector('.popup__photo');
+      getImageElements(filteredArray[i].offer.photos, popupPhoto, popupPhotos)
 
-    const popupPhoto = cardClone.querySelector('.popup__photo');
-    getImageElements(filteredArray[i].offer.photos, popupPhoto, popupPhotos)
-
-    marker.addTo(adLayer).bindPopup(`
+      marker.addTo(adLayer).bindPopup(`
       <article class="popup">
         <img src="${filteredArray[i].author.avatar}" class="popup__avatar" width="70" height="70" alt="Аватар пользователя">
         <h3 class ="popup__title">${filteredArray[i].offer.title}</h3>
@@ -138,6 +138,7 @@ const createMarkers = (arrayData) => {
         <p class ="popup__description">${filteredArray[i].offer.description}</p>
         ${popupPhotos.outerHTML}
       </article>`)
+    }
   }
 }
 

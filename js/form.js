@@ -30,7 +30,7 @@ if (typeApartment.selectedIndex === 1) {
   price.min = MIN_ARRAY_PRICES[1];
 }
 
-typeApartment.addEventListener('change', () => {
+const onTypeApartmentChange = () => {
   if (typeApartment.selectedIndex === 0) {
     price.placeholder = MIN_ARRAY_PRICES[0];
     price.min = MIN_ARRAY_PRICES[0];
@@ -47,19 +47,26 @@ typeApartment.addEventListener('change', () => {
     price.placeholder = MIN_ARRAY_PRICES[3];
     price.min = MIN_ARRAY_PRICES[3];
   }
-});
+};
 
-timeIn.addEventListener('change', () => {
+typeApartment.addEventListener('change', onTypeApartmentChange)
+
+
+const onTimeInChange = () => {
   let current = timeIn.selectedIndex;
   timeOut.options[current].selected = true;
-});
+};
 
-timeOut.addEventListener('change', () => {
+timeIn.addEventListener('change', onTimeInChange)
+
+const onTimeOutChange = () => {
   let current = timeOut.selectedIndex;
   timeIn.options[current].selected = true;
-});
+};
 
-title.addEventListener('input', () => {
+timeOut.addEventListener('change', onTimeOutChange)
+
+const onTitleInput = () => {
   const titleValue = title.value.length;
   if (titleValue < MIN_TITLE_LENGTH) {
     title.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - titleValue} симв.`)
@@ -70,43 +77,56 @@ title.addEventListener('input', () => {
   }
 
   title.reportValidity();
-});
+};
+
+title.addEventListener('input', onTitleInput)
+
+const setAttributeDisabled = (input) => {
+  input.setAttribute('disabled' ,'disabled');
+}
+
+const setAttributeRemove = (input) => {
+  input.removeAttribute('disabled' ,'disabled');
+}
 
 if (numberOfRooms.selectedIndex === 0) {
   capacity.selectedIndex = 2;
-  capacity.options[0].setAttribute('disabled' ,'disabled');
-  capacity.options[1].setAttribute('disabled' ,'disabled');
-  capacity.options[3].setAttribute('disabled' ,'disabled');
+  setAttributeDisabled(capacity.options[0]);
+  setAttributeDisabled(capacity.options[1]);
+  setAttributeDisabled(capacity.options[3]);
 }
 
-numberOfRooms.addEventListener('change', () => {
+const onNumberOfRoomsChange = () => {
   if (numberOfRooms.selectedIndex === 0) {
     capacity.selectedIndex = 2;
-    capacity.options[2].removeAttribute('disabled' ,'disabled');
-    capacity.options[0].setAttribute('disabled' ,'disabled');
-    capacity.options[1].setAttribute('disabled' ,'disabled');
-    capacity.options[3].setAttribute('disabled' ,'disabled');
+    setAttributeRemove(capacity.options[2]);
+    setAttributeDisabled(capacity.options[0]);
+    setAttributeDisabled(capacity.options[1]);
+    setAttributeDisabled(capacity.options[3]);
   } else if (numberOfRooms.selectedIndex === 1) {
     capacity.selectedIndex = 2;
-    capacity.options[1].removeAttribute('disabled' ,'disabled');
-    capacity.options[2].removeAttribute('disabled' ,'disabled');
-    capacity.options[0].setAttribute('disabled' ,'disabled');
-    capacity.options[3].setAttribute('disabled' ,'disabled');
+    setAttributeRemove(capacity.options[1]);
+    setAttributeRemove(capacity.options[2]);
+    setAttributeDisabled(capacity.options[0]);
+    setAttributeDisabled(capacity.options[3]);
   } else if (numberOfRooms.selectedIndex === 2) {
     capacity.selectedIndex = 2;
-    capacity.options[0].removeAttribute('disabled' ,'disabled');
-    capacity.options[1].removeAttribute('disabled' ,'disabled');
-    capacity.options[2].removeAttribute('disabled' ,'disabled');
-    capacity.options[3].setAttribute('disabled' ,'disabled');
+    setAttributeRemove(capacity.options[0]);
+    setAttributeRemove(capacity.options[1]);
+    setAttributeRemove(capacity.options[2]);
+    setAttributeDisabled(capacity.options[3]);
   } else if (numberOfRooms.selectedIndex === 3) {
-    capacity.options[3].removeAttribute('disabled' ,'disabled');
-    capacity.options[0].setAttribute('disabled' ,'disabled');
-    capacity.options[1].setAttribute('disabled' ,'disabled');
-    capacity.options[2].setAttribute('disabled' ,'disabled');
+    setAttributeRemove(capacity.options[3]);
+    setAttributeDisabled(capacity.options[0]);
+    setAttributeDisabled(capacity.options[1]);
+    setAttributeDisabled(capacity.options[2]);
     capacity.selectedIndex = 3;
   }
   capacity.reportValidity();
-});
+}
+
+numberOfRooms.addEventListener('change', onNumberOfRoomsChange)
+
 
 const formReset = () => {
   formAd.reset(),
@@ -119,16 +139,16 @@ const getSuccessMessage = () => {
   successMessage.style.zIndex = 100;
   main.append(successMessage);
   formReset();
-  document.addEventListener('keydown', closeSuccessMessage);
-  document.addEventListener('click', closeSuccessMessage);
+  document.addEventListener('keydown', onSuccessMessageClose);
+  document.addEventListener('click', onSuccessMessageClose);
 }
 
-const closeSuccessMessage = (evt) => {
+const onSuccessMessageClose = (evt) => {
   if (isEscclick(evt) || isMouseclick(evt)) {
     evt.preventDefault();
     successMessage.remove();
-    document.removeEventListener('keydown', closeSuccessMessage);
-    document.removeEventListener('click', closeSuccessMessage);
+    document.removeEventListener('keydown', onSuccessMessageClose);
+    document.removeEventListener('click', onSuccessMessageClose);
   }
 }
 
@@ -136,18 +156,18 @@ const getErrorMessage = () => {
   errorMessage.style.zIndex = 100;
   main.append(errorMessage);
   formReset();
-  document.addEventListener('keydown', closeErrorMessage);
-  document.addEventListener('click', closeErrorMessage);
-  errorButton.addEventListener('click', closeErrorMessage);
+  document.addEventListener('keydown', onErrorMessageClose);
+  document.addEventListener('click', onErrorMessageClose);
+  errorButton.addEventListener('click', onErrorMessageClose);
 }
 
-const closeErrorMessage = (evt) => {
+const onErrorMessageClose = (evt) => {
   if (isEscclick(evt) || isMouseclick(evt)) {
     evt.preventDefault();
     errorMessage.remove();
-    document.removeEventListener('keydown', closeErrorMessage);
-    document.removeEventListener('click', closeErrorMessage);
-    errorButton.removeEventListener('click', closeSuccessMessage);
+    document.removeEventListener('keydown', onErrorMessageClose);
+    document.removeEventListener('click', onErrorMessageClose);
+    errorButton.removeEventListener('click', onSuccessMessageClose);
   }
 }
 

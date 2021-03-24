@@ -1,9 +1,11 @@
 import {showAlert} from './utils.js';
 
 const ERROR_MESSAGE = 'При загрузке данных с сервера произошла ошибка. Попробуйте ещё раз';
+const INCOMING_DATA = 'https://22.javascript.pages.academy/keksobooking/data';
+const OUTGOING_DATA = 'https://22.javascript.pages.academy/keksobooking';
 
 const getData = (onSuccess) => {
-  fetch('https://22.javascript.pages.academy/keksobooking/data')
+  fetch(INCOMING_DATA)
     .then((response) => {
       return (response.ok) ? response.json() : showAlert(ERROR_MESSAGE);
     })
@@ -17,7 +19,7 @@ const getData = (onSuccess) => {
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://22.javascript.pages.academy/keksobooking',
+    OUTGOING_DATA,
     {
       method: 'POST',
       body,

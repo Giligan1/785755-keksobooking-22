@@ -41,7 +41,7 @@ const getFilters = (data) => {
   return type && price && rooms && guests && features;
 }
 
-const arrayAdvertisement = (data) => {
+const setArrayAdvertisement = (data) => {
   return data.slice().filter(getFilters);
 }
 
@@ -51,6 +51,6 @@ const setFilterChange = (cb) => {
   })
 }
 
-export {setFilterChange, getFilters, formFilters, formMapFeatures, arrayAdvertisement}
+export {setFilterChange, getFilters, formFilters, formMapFeatures, setArrayAdvertisement}
 
 
